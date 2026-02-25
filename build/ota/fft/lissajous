@@ -1,0 +1,9 @@
+{
+  "name": "lissajous",
+  "bars": 32,
+  "min_db": -80,
+  "max_db": -30,
+  "rgb_mode": "none",
+  "oled_style": "lissajous",
+  "fps": 30
+}

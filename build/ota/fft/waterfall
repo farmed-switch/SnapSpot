@@ -1,0 +1,9 @@
+{
+  "name": "waterfall",
+  "bars": 128,
+  "min_db": -80,
+  "max_db": -25,
+  "rgb_mode": "none",
+  "oled_style": "waterfall",
+  "fps": 25
+}

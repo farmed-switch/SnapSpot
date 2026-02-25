@@ -1,0 +1,9 @@
+{
+  "name": "dense_peak",
+  "bars": 64,
+  "min_db": -80,
+  "max_db": -30,
+  "rgb_mode": "spectrum",
+  "oled_style": "peak_hold",
+  "fps": 30
+}
