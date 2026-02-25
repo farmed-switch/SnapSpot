@@ -1,0 +1,9 @@
+{
+  "name": "extreme_test_profile",
+  "bars": 4,
+  "min_db": -50,
+  "max_db": -5,
+  "rgb_mode": "mono",
+  "oled_style": "wave",
+  "fps": 12
+}
