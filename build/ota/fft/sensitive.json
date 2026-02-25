@@ -1,0 +1,9 @@
+{
+  "name": "sensitive",
+  "bars": 32,
+  "min_db": -90.0,
+  "max_db": -40.0,
+  "fps": 30,
+  "rgb_mode": "none",
+  "oled_style": "bars"
+}
