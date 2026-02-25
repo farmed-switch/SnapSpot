@@ -1,0 +1,9 @@
+{
+  "name": "spectrum",
+  "bars": 64,
+  "min_db": -90,
+  "max_db": 0,
+  "rgb_mode": "spectrum",
+  "oled_style": "bars",
+  "fps": 40
+}
