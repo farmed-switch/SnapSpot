@@ -1,0 +1,10 @@
+{
+  "name": "bars_blue",
+  "bars": 32,
+  "min_db": -70,
+  "max_db": 0,
+  "rgb_mode": "solid",
+  "rgb_color": "#0066FF",
+  "oled_style": "bars",
+  "fps": 30
+}
