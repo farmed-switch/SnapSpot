@@ -1,9 +1,0 @@
-{
-  "name": "default",
-  "bars": 32,
-  "min_db": -80,
-  "max_db": 0,
-  "rgb_mode": "spectrum",
-  "oled_style": "bars",
-  "fps": 30
-}
