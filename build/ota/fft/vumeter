@@ -1,0 +1,12 @@
+{
+  "name": "vumeter",
+  "bars": 8,
+  "min_db": -60,
+  "max_db": 0,
+  "rgb_mode": "vu",
+  "rgb_color_low": "#00CC44",
+  "rgb_color_mid": "#FFCC00",
+  "rgb_color_peak": "#FF2200",
+  "oled_style": "line",
+  "fps": 25
+}
