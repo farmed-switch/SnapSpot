@@ -52,7 +52,7 @@
       "freq_hz": 400000,
       "scan": true,
       "timeout_us": 100,
-      "comment": "400kHz Fast Mode I2C - TAS5805M @ 0x4C on Port 0"
+      "comment": "400kHz Fast Mode I2C - TAS5805M @ 0x2D on Port 0 (ADR pin pulled up via 15k resistor)"
     },
     "control": {
       "dac_enable": 17,
@@ -110,12 +110,12 @@
     "4. Release TAS5805M from reset (GPIO17 HIGH = PWDN inactive)",
     "5. Wait 300ms for TAS5805M internal boot",
     "6. Initialize I2C at 400kHz (Fast Mode)",
-    "7. Configure TAS5805M via I2C (Address 0x4C, Port 0)"
+    "7. Configure TAS5805M via I2C (Address 0x2D, Port 0)"
   ],
 
   "notes": [
     "CRITICAL: TAS5805M requires I2S clock running BEFORE I2C initialization",
-    "CRITICAL: I2C address is 0x4C (hardware configured via ADR pin)",
+    "CRITICAL: I2C address is 0x2D (ADR pin pulled up via 15k resistor to VDD — Sonocotta default)",
     "GPIO17 = PWDN pin: LOW = power-down/reset, HIGH = active (normal logic, no inverter)",
     "Base model uses TAS5805M (25W), Plus model uses TAS5825M (30W, better DSP)",
     "Differs from Louder-ESP32-S3 Plus only in flash size (8MB vs 16MB), DAC model, and no fault pin",
@@ -130,4 +130,3 @@
     "ESP32-S3-WROOM-1"
   ]
 }
-
