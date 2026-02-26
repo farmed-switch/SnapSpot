@@ -1,8 +1,0 @@
-{
-  "dac_model": "MAX98357",
-  "i2c_required": false,
-  "comment": "Maxim MAX98357A — Class D amp with I2S input, no I2C control. Fully autonomous. Enable via SD_MODE pin.",
-  "init": [],
-  "volume": null,
-  "mute": null
-}
