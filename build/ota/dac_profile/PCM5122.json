@@ -10,6 +10,8 @@
     {"delay_ms": 15},
     {"comment": "Standby during configuration"},
     {"reg": "0x02", "val": "0x10"},
+    {"comment": "Unmute both channels (bits 4+3 = MUTR/MUTL, cleared = unmuted)"},
+    {"reg": "0x03", "val": "0x00"},
     {"comment": "CRITICAL: clock source = BCK (ESP32 has no separate MCLK)"},
     {"reg": "0x0D", "val": "0x10"},
     {"comment": "CRITICAL: PLL reference = BCK"},
@@ -22,22 +24,23 @@
     {"comment": "Exit standby — normal operation"},
     {"reg": "0x02", "val": "0x00"},
     {"delay_ms": 15},
-    {"comment": "Volume: 0x00 = 0 dB (NOTE: 0xFF = -127.5 dB = fully muted!)"},
-    {"reg": "0x3D", "val": "0x00"},
-    {"reg": "0x3E", "val": "0x00"}
+    {"comment": "Volume: 0x30 = 0 dB (0x00 = +24 dB max gain, 0xFE = -103 dB, 0xFF = mute)"},
+    {"reg": "0x3D", "val": "0x30"},
+    {"reg": "0x3E", "val": "0x30"}
   ],
   "volume": {
     "reg_left":     "0x3D",
     "reg_right":    "0x3E",
-    "zero_db_code": 0,
+    "zero_db_code": 48,
     "db_per_step":  -0.5,
-    "min_db":       -127.5,
-    "max_db":       0.0
+    "min_db":       -103.0,
+    "max_db":       0.0,
+    "comment":      "0x00=+24dB, 0x30=0dB, 0xFE=-103dB, 0xFF=mute. Formula: reg=(24-dB)*2"
   },
   "mute": {
-    "reg":      "0x3D",
-    "muted":    "0xFF",
+    "reg":      "0x03",
+    "muted":    "0x11",
     "unmuted":  "0x00",
-    "comment":  "PCM5122 has no dedicated mute register — use volume min/max as mute"
+    "comment":  "Reg 0x03 bits[4:3] = MUTR/MUTL. 0x11=both muted, 0x00=both unmuted"
   }
 }
