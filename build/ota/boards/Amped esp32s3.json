@@ -1,0 +1,129 @@
+{
+  "id": "amped_esp32s3",
+  "name": "Amped-ESP32-S3",
+  "description": "Amped-ESP32-S3 — PCM5100A stereo DAC (I2S) + TPA3110 2x15W Class-D amplifier",
+  "revision": "A",
+  "manufacturer": "Sonocotta",
+
+  "hardware": {
+    "chip": "ESP32-S3",
+    "board": "esp32-s3-devkitc-1",
+    "variant": "ESP32S3",
+    "flash_size_mb": 8,
+    "cpu_freq_mhz": 240,
+    "psram": {
+      "mode": "octal",
+      "speed_mhz": 80,
+      "required": true
+    }
+  },
+
+  "audio": {
+    "dac_model": "PCM5100A",
+    "amplifier": "TPA3110",
+    "dac_mode": "STD",
+    "mixer_mode": "STEREO",
+    "max_power_watts": 15,
+    "analog_gain_db": 0,
+    "volume_min_db": -60,
+    "volume_max_db": 0,
+    "sample_rate": 48000,
+    "max_sample_rate": 384000,
+    "bit_depth": 24,
+    "max_bit_depth": 32,
+    "has_hardware_eq": false,
+    "eq_bands": 0,
+    "eq_type": "software_only",
+    "comment": "PCM5100A has no I2C — pure I2S DAC. Volume and mute handled via firmware mixer + TPA3110 amp enable (GPIO17). Use software 18-band EQ."
+  },
+
+  "pins": {
+    "i2s": {
+      "bck": 14,
+      "ws": 15,
+      "dout": 16,
+      "din": -1,
+      "comment": "BCK=GPIO14, WS(LRCLK)=GPIO15, DOUT=GPIO16"
+    },
+    "i2c": {
+      "sda": -1,
+      "scl": -1,
+      "addr": "0x00",
+      "port": -1,
+      "freq_hz": 0,
+      "scan": false,
+      "timeout_us": 0,
+      "comment": "No I2C — PCM5100A is I2S-only with no register control interface"
+    },
+    "control": {
+      "dac_enable": -1,
+      "amp_enable": 17,
+      "mute": -1,
+      "fault": -1,
+      "comment": "TPA3110 amp unmute on GPIO17 (active HIGH = play, LOW = muted/standby)"
+    },
+    "peripherals": {
+      "rgb_led": 9,
+      "ir_rx": 7,
+      "comment": "RGB LED WS2812 on GPIO9, IR receiver on GPIO7"
+    },
+    "ethernet": {
+      "type": "W5500",
+      "clk": 12,
+      "mosi": 11,
+      "miso": 13,
+      "cs": 10,
+      "interrupt": 6,
+      "reset": 5,
+      "comment": "W5500 Ethernet via SPI (optional — set all to -1 if not fitted)"
+    },
+    "spi": {
+      "clk": 12,
+      "mosi": 11,
+      "miso": 13,
+      "comment": "Shared SPI bus for Ethernet and Display"
+    },
+    "display": {
+      "type": "OLED",
+      "interface": "SPI",
+      "cs": 47,
+      "dc": 38,
+      "reset": 48,
+      "comment": "SSD1306/SH1106 compatible OLED via SPI (optional)"
+    }
+  },
+
+  "features": {
+    "ethernet": true,
+    "wifi": true,
+    "rgb_led": true,
+    "ir_receiver": true,
+    "oled_display": true,
+    "hardware_eq": false,
+    "software_eq": true,
+    "fault_detection": false,
+    "microphone": false
+  },
+
+  "init_sequence": [
+    "1. Initialize I2S (PCM5100A powers up and locks to I2S clock automatically)",
+    "2. Wait for I2S clock to stabilize (~100ms)",
+    "3. Set TPA3110 amp enable HIGH (GPIO17) to unmute and enable amplifier"
+  ],
+
+  "notes": [
+    "PCM5100A has NO I2C interface — all control is hardware-pin based",
+    "XSMT pin on PCM5100A: HIGH = play, LOW = mute (managed by board hardware)",
+    "TPA3110 amp enable on GPIO17: HIGH = active/unmuted, LOW = muted/standby",
+    "Volume is controlled via firmware software mixer only (no hardware register)",
+    "Use software 18-band EQ — PCM5100A has no onboard DSP",
+    "PCM5100A supports up to 384kHz sample rate at 32-bit depth",
+    "Base model uses TPA3110 (2x15W @ 8Ω), Plus model uses TPA3128 (2x22W)",
+    "RGB LED on GPIO9 (differs from Plus model which uses GPIO21)",
+    "Optional W5500 Ethernet and SPI OLED display share the same SPI bus"
+  ],
+
+  "compatible_with": [
+    "ESP32-S3-WROOM-N8R8"
+  ]
+}
