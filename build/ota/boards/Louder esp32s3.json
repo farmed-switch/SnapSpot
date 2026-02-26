@@ -47,7 +47,7 @@
     "i2c": {
       "sda": 8,
       "scl": 9,
-      "addr": "0x4C",
+      "addr": "0x2D",
       "port": 0,
       "freq_hz": 400000,
       "scan": true,
@@ -130,3 +130,4 @@
     "ESP32-S3-WROOM-1"
   ]
 }
+
