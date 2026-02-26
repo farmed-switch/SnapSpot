@@ -1,0 +1,43 @@
+{
+  "dac_model": "PCM5122",
+  "i2c_required": true,
+  "comment": "Texas Instruments PCM5122 — 2-ch 32-bit 384kHz DAC. No MCLK — uses BCK as PLL source. Used on Amped-ESP32-S3.",
+  "init": [
+    {"comment": "Select Page 0"},
+    {"reg": "0x00", "val": "0x00"},
+    {"comment": "Soft reset — PLL + registers to datasheet defaults"},
+    {"reg": "0x01", "val": "0x11"},
+    {"delay_ms": 15},
+    {"comment": "Standby during configuration"},
+    {"reg": "0x02", "val": "0x10"},
+    {"comment": "CRITICAL: clock source = BCK (ESP32 has no separate MCLK)"},
+    {"reg": "0x0D", "val": "0x10"},
+    {"comment": "CRITICAL: PLL reference = BCK"},
+    {"reg": "0x25", "val": "0x08"},
+    {"comment": "I2S format — bits[5:4] = word length: 00=16bit 10=24bit 11=32bit"},
+    {"reg": "0x28", "val_by_bitdepth": {"16": "0x00", "24": "0x20", "32": "0x30"}},
+    {"comment": "Disable auto-mute (avoids silent passages being muted)"},
+    {"reg": "0x09", "val": "0x00"},
+    {"reg": "0x0A", "val": "0x00"},
+    {"comment": "Exit standby — normal operation"},
+    {"reg": "0x02", "val": "0x00"},
+    {"delay_ms": 15},
+    {"comment": "Volume: 0x00 = 0 dB (NOTE: 0xFF = -127.5 dB = fully muted!)"},
+    {"reg": "0x3D", "val": "0x00"},
+    {"reg": "0x3E", "val": "0x00"}
+  ],
+  "volume": {
+    "reg_left":     "0x3D",
+    "reg_right":    "0x3E",
+    "zero_db_code": 0,
+    "db_per_step":  -0.5,
+    "min_db":       -127.5,
+    "max_db":       0.0
+  },
+  "mute": {
+    "reg":      "0x3D",
+    "muted":    "0xFF",
+    "unmuted":  "0x00",
+    "comment":  "PCM5122 has no dedicated mute register — use volume min/max as mute"
+  }
+}
