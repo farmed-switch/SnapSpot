@@ -9,7 +9,7 @@
     "chip": "ESP32-S3",
     "board": "esp32-s3-devkitc-1",
     "variant": "ESP32S3",
-    "flash_size_mb": 16,
+    "flash_size_mb": 8,
     "cpu_freq_mhz": 240,
     "psram": {
       "mode": "octal",
@@ -21,6 +21,7 @@
   "audio": {
     "dac_model": "PCM5122",
     "amplifier": "TPA3128",
+    "mixer_mode": "STEREO",
     "max_power_watts": 22,
     "analog_gain_db": -6,
     "volume_min_db": -60,
