@@ -1,0 +1,42 @@
+{
+  "dac_model": "TAS5825M",
+  "i2c_required": true,
+  "comment": "Texas Instruments TAS5825M — 2x25W differential output. Used on Louder-ESP32-S3.",
+  "init": [
+    {"comment": "Page 0 select"},
+    {"reg": "0x00", "val": "0x00"},
+    {"delay_ms": 5},
+    {"comment": "Software reset — clears all registers"},
+    {"reg": "0x01", "val": "0x11"},
+    {"delay_ms": 10},
+    {"comment": "Enter Deep Sleep for clock sync"},
+    {"reg": "0x03", "val": "0x02"},
+    {"delay_ms": 5},
+    {"comment": "Safe startup volume: 0x30 = 0 dB"},
+    {"reg": "0x4C", "val": "0x30"},
+    {"reg": "0x4D", "val": "0x30"},
+    {"comment": "Clock: auto-detect SCLK ratio (256xfs)"},
+    {"reg": "0x33", "val": "0x03"},
+    {"comment": "FS setting: auto (44.1/48 kHz)"},
+    {"reg": "0x34", "val": "0x00"},
+    {"delay_ms": 5},
+    {"comment": "Transition Deep Sleep → Play Mode (CRITICAL for PWM output)"},
+    {"reg": "0x03", "val": "0x03"},
+    {"delay_ms": 50},
+    {"comment": "Digital unmute both channels"},
+    {"reg": "0x05", "val": "0x00"}
+  ],
+  "volume": {
+    "reg_left":     "0x4C",
+    "reg_right":    "0x4D",
+    "zero_db_code": 48,
+    "db_per_step":  -0.5,
+    "min_db":       -103.5,
+    "max_db":       24.0
+  },
+  "mute": {
+    "reg":      "0x05",
+    "muted":    "0x03",
+    "unmuted":  "0x00"
+  }
+}
