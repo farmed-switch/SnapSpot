@@ -9,7 +9,7 @@
     "chip": "ESP32-S3",
     "board": "esp32-s3-devkitc-1",
     "variant": "ESP32S3",
-    "flash_size_mb": 16,
+    "flash_size_mb": 8,
     "cpu_freq_mhz": 240,
     "psram": {
       "mode": "octal",
