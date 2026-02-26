@@ -1,0 +1,129 @@
+{
+  "id": "louder_esp32s3",
+  "name": "Louder-ESP32-S3",
+  "description": "Louder-ESP32-S3 - TAS5825M 30W DAC/Amp with hardware DSP + Ethernet + Display",
+  "revision": "A",
+  "manufacturer": "Sonocotta",
+
+  "hardware": {
+    "chip": "ESP32-S3",
+    "board": "esp32-s3-devkitc-1",
+    "variant": "ESP32S3",
+    "flash_size_mb": 8,
+    "cpu_freq_mhz": 240,
+    "psram": {
+      "mode": "octal",
+      "speed_mhz": 80,
+      "required": true
+    }
+  },
+
+  "audio": {
+    "dac_model": "TAS5825M",
+    "dac_mode": "BTL",
+    "mixer_mode": "STEREO",
+    "max_power_watts": 30,
+    "analog_gain_db": -6,
+    "volume_min_db": -60,
+    "volume_max_db": -1,
+    "sample_rate": 48000,
+    "max_sample_rate": 96000,
+    "bit_depth": 24,
+    "max_bit_depth": 24,
+    "has_hardware_eq": true,
+    "eq_bands": 15,
+    "eq_type": "hardware_dsp",
+    "comment": "TAS5825M integrates DAC + Class-D amp + DSP in one chip. No separate amplifier IC."
+  },
+
+  "pins": {
+    "i2s": {
+      "bck": 14,
+      "ws": 15,
+      "dout": 16,
+      "din": -1,
+      "comment": "BCK=GPIO14, WS(LRCLK)=GPIO15, DOUT=GPIO16"
+    },
+    "i2c": {
+      "sda": 8,
+      "scl": 9,
+      "addr": "0x4C",
+      "port": 0,
+      "freq_hz": 400000,
+      "scan": true,
+      "timeout_us": 100,
+      "comment": "400kHz Fast Mode I2C - TAS5825M @ 0x4C on Port 0"
+    },
+    "control": {
+      "dac_enable": 17,
+      "mute": -1,
+      "fault": -1,
+      "comment": "PWDN=GPIO17 (inverted logic via transistor: LOW=enable, HIGH=disable)"
+    },
+    "peripherals": {
+      "rgb_led": 21,
+      "ir_rx": 7,
+      "comment": "RGB LED WS2812 on GPIO21, IR receiver on GPIO7"
+    },
+    "ethernet": {
+      "type": "W5500",
+      "clk": 12,
+      "mosi": 11,
+      "miso": 13,
+      "cs": 10,
+      "interrupt": 6,
+      "reset": 5,
+      "comment": "W5500 Ethernet via SPI"
+    },
+    "spi": {
+      "clk": 12,
+      "mosi": 11,
+      "miso": 13,
+      "comment": "Shared with Ethernet and Display"
+    },
+    "display": {
+      "type": "OLED",
+      "interface": "SPI",
+      "cs": 47,
+      "dc": 38,
+      "reset": 48,
+      "comment": "SSD1306 or SH1106 compatible OLED (optional)"
+    }
+  },
+
+  "features": {
+    "ethernet": true,
+    "wifi": true,
+    "rgb_led": true,
+    "ir_receiver": true,
+    "oled_display": true,
+    "hardware_eq": true,
+    "software_eq": false,
+    "fault_detection": false,
+    "microphone": false
+  },
+
+  "init_sequence": [
+    "1. Enable DAC power (GPIO17 LOW via inverted transistor)",
+    "2. Wait 500ms for TAS5825M startup",
+    "3. Initialize I2S and start clock",
+    "4. Initialize I2C at 400kHz (Fast Mode)",
+    "5. Configure TAS5825M via I2C (Address 0x4C, Port 0)"
+  ],
+
+  "notes": [
+    "CRITICAL: TAS5825M requires I2S clock running BEFORE I2C initialization",
+    "CRITICAL: I2C address is 0x4C (hardware configured via ADR pin)",
+    "GPIO17 has inverted logic via transistor: LOW=enable, HIGH=disable",
+    "Differs from Louder-ESP32-S3 Plus only in flash size (8MB vs 16MB) and no fault pin",
+    "Ethernet and WiFi can be used simultaneously",
+    "RGB LED uses WS2812 protocol on GPIO21",
+    "OLED display via SPI (shared pins with Ethernet)",
+    "Hardware DSP provides 15-band parametric EQ with zero CPU overhead"
+  ],
+
+  "compatible_with": [
+    "ESP32-S3-WROOM-N8R8",
+    "ESP32-S3-WROOM-1"
+  ]
+}
