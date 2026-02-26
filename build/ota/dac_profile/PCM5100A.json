@@ -1,0 +1,8 @@
+{
+  "dac_model": "PCM5100A",
+  "i2c_required": false,
+  "comment": "Texas Instruments PCM5100A — 2-ch 32-bit DAC, no I2C control. XSMT pin = hardware mute (active HIGH = play, LOW = mute) — managed by board hardware, not firmware registers. Volume is software-only via firmware mixer. Mute is handled via amp_enable pin (e.g. TPA3110 GPIO17 on Amped-ESP32-S3).",
+  "init": [],
+  "volume": null,
+  "mute": null
+}
