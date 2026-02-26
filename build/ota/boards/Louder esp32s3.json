@@ -1,7 +1,7 @@
 {
   "id": "louder_esp32s3",
   "name": "Louder-ESP32-S3",
-  "description": "Louder-ESP32-S3 - TAS5825M 30W DAC/Amp with hardware DSP + Ethernet + Display",
+  "description": "Louder-ESP32-S3 - TAS5805M 25W DAC/Amp with hardware DSP + Ethernet + Display",
   "revision": "A",
   "manufacturer": "Sonocotta",
 
@@ -19,10 +19,10 @@
   },
 
   "audio": {
-    "dac_model": "TAS5825M",
+    "dac_model": "TAS5805M",
     "dac_mode": "BTL",
     "mixer_mode": "STEREO",
-    "max_power_watts": 30,
+    "max_power_watts": 25,
     "analog_gain_db": -6,
     "volume_min_db": -60,
     "volume_max_db": -1,
@@ -33,7 +33,7 @@
     "has_hardware_eq": true,
     "eq_bands": 15,
     "eq_type": "hardware_dsp",
-    "comment": "TAS5825M integrates DAC + Class-D amp + DSP in one chip. No separate amplifier IC."
+    "comment": "TAS5805M integrates DAC + Class-D amp + DSP in one chip. No separate amplifier IC."
   },
 
   "pins": {
@@ -52,7 +52,7 @@
       "freq_hz": 400000,
       "scan": true,
       "timeout_us": 100,
-      "comment": "400kHz Fast Mode I2C - TAS5825M @ 0x4C on Port 0"
+      "comment": "400kHz Fast Mode I2C - TAS5805M @ 0x4C on Port 0"
     },
     "control": {
       "dac_enable": 17,
@@ -104,18 +104,21 @@
   },
 
   "init_sequence": [
-    "1. Enable DAC power (GPIO17 LOW via inverted transistor)",
-    "2. Wait 500ms for TAS5825M startup",
-    "3. Initialize I2S and start clock",
-    "4. Initialize I2C at 400kHz (Fast Mode)",
-    "5. Configure TAS5825M via I2C (Address 0x4C, Port 0)"
+    "1. Hold TAS5805M in reset (GPIO17 LOW = PWDN active)",
+    "2. Initialize I2S and start clock signal",
+    "3. Wait 500ms for stable I2S clock",
+    "4. Release TAS5805M from reset (GPIO17 HIGH = PWDN inactive)",
+    "5. Wait 300ms for TAS5805M internal boot",
+    "6. Initialize I2C at 400kHz (Fast Mode)",
+    "7. Configure TAS5805M via I2C (Address 0x4C, Port 0)"
   ],
 
   "notes": [
-    "CRITICAL: TAS5825M requires I2S clock running BEFORE I2C initialization",
+    "CRITICAL: TAS5805M requires I2S clock running BEFORE I2C initialization",
     "CRITICAL: I2C address is 0x4C (hardware configured via ADR pin)",
-    "GPIO17 has inverted logic via transistor: LOW=enable, HIGH=disable",
-    "Differs from Louder-ESP32-S3 Plus only in flash size (8MB vs 16MB) and no fault pin",
+    "GPIO17 = PWDN pin: LOW = power-down/reset, HIGH = active (normal logic, no inverter)",
+    "Base model uses TAS5805M (25W), Plus model uses TAS5825M (30W, better DSP)",
+    "Differs from Louder-ESP32-S3 Plus only in flash size (8MB vs 16MB), DAC model, and no fault pin",
     "Ethernet and WiFi can be used simultaneously",
     "RGB LED uses WS2812 protocol on GPIO21",
     "OLED display via SPI (shared pins with Ethernet)",
